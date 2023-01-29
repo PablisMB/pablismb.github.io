@@ -21,9 +21,69 @@
     <!-- particles.js container -->
     <div id="particles-js">
       <div class="container">
+          <input type="color" id="colorPicker" />
+
         <div class="ab-div">
           <h1 class="title">pablismb / elpaloxd</h1>
           <p class="subtitle">I'm a 15 year old developer from Spain.</p>
+          <script>
+            const colorPicker = document.getElementById("colorPicker");
+            colorPicker.value = "#162421";
+            colorPicker.addEventListener("input", function () {
+              document.body.style.backgroundColor = colorPicker.value;
+              document.querySelector(".card").style.backgroundColor =
+                colorPicker.value;
+              let color = colorPicker.value;
+              const buttons = document.querySelectorAll(".btn");
+              for (const btn of buttons) {
+                btn.style.backgroundColor = lightenColor(color);
+              }
+            });
+
+            function lightenColor(color) {
+              let r, g, b, hsp;
+              if (color.match(/^rgb/)) {
+                color = color.match(
+                  /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/
+                );
+                r = color[1];
+                g = color[2];
+                b = color[3];
+              } else {
+                color = +(
+                  "0x" +
+                  color.slice(1).replace(color.length < 5 && /./g, "$&$&")
+                );
+                r = color >> 16;
+                g = (color >> 8) & 255;
+                b = color & 255;
+              }
+              hsp = Math.sqrt(
+                0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)
+              );
+              if (hsp > 127.5) {
+                return (
+                  "rgb(" +
+                  (r / 255) * 100 +
+                  "%," +
+                  (g / 255) * 100 +
+                  "%," +
+                  (b / 255) * 100 +
+                  "%)"
+                );
+              } else {
+                return (
+                  "rgb(" +
+                  (r / 255) * ((hsp / 127.5) * 100 + 50) +
+                  "%," +
+                  (g / 255) * ((hsp / 127.5) * 100 + 50) +
+                  "%," +
+                  (b / 255) * ((hsp / 127.5) * 100 + 50) +
+                  "%)"
+                );
+              }
+            }
+          </script>
         </div>
         <div class="card">
           <div class="b-div">
